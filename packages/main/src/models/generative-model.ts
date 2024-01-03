@@ -49,6 +49,7 @@ import {
  */
 export class GenerativeModel {
   model: string;
+  apiVersion: string = "v1";
   generationConfig: GenerationConfig;
   safetySettings: SafetySetting[];
 
@@ -60,6 +61,9 @@ export class GenerativeModel {
       this.model = modelParams.model.split("models/")?.[1];
     } else {
       this.model = modelParams.model;
+    }
+    if (modelParams.apiVersion) {
+      this.apiVersion = modelParams.apiVersion;
     }
     this.generationConfig = modelParams.generationConfig || {};
     this.safetySettings = modelParams.safetySettings || [];
@@ -73,7 +77,7 @@ export class GenerativeModel {
     request: GenerateContentRequest | string | Array<string | Part>,
   ): Promise<GenerateContentResult> {
     const formattedParams = formatGenerateContentInput(request);
-    return generateContent(this.apiKey, this.model, {
+    return generateContent(this.apiKey, this.model, this.apiVersion, {
       generationConfig: this.generationConfig,
       safetySettings: this.safetySettings,
       ...formattedParams,
@@ -90,7 +94,7 @@ export class GenerativeModel {
     request: GenerateContentRequest | string | Array<string | Part>,
   ): Promise<GenerateContentStreamResult> {
     const formattedParams = formatGenerateContentInput(request);
-    return generateContentStream(this.apiKey, this.model, {
+    return generateContentStream(this.apiKey, this.model, this.apiVersion, {
       generationConfig: this.generationConfig,
       safetySettings: this.safetySettings,
       ...formattedParams,
@@ -102,7 +106,12 @@ export class GenerativeModel {
    * multi-turn chats.
    */
   startChat(startChatParams?: StartChatParams): ChatSession {
-    return new ChatSession(this.apiKey, this.model, startChatParams);
+    return new ChatSession(
+      this.apiKey,
+      this.model,
+      this.apiVersion,
+      startChatParams,
+    );
   }
 
   /**
@@ -112,7 +121,12 @@ export class GenerativeModel {
     request: CountTokensRequest | string | Array<string | Part>,
   ): Promise<CountTokensResponse> {
     const formattedParams = formatGenerateContentInput(request);
-    return countTokens(this.apiKey, this.model, formattedParams);
+    return countTokens(
+      this.apiKey,
+      this.model,
+      this.apiVersion,
+      formattedParams,
+    );
   }
 
   /**
@@ -122,7 +136,12 @@ export class GenerativeModel {
     request: EmbedContentRequest | string | Array<string | Part>,
   ): Promise<EmbedContentResponse> {
     const formattedParams = formatEmbedContentInput(request);
-    return embedContent(this.apiKey, this.model, formattedParams);
+    return embedContent(
+      this.apiKey,
+      this.model,
+      this.apiVersion,
+      formattedParams,
+    );
   }
 
   /**
@@ -134,6 +153,7 @@ export class GenerativeModel {
     return batchEmbedContents(
       this.apiKey,
       this.model,
+      this.apiVersion,
       batchEmbedContentRequest,
     );
   }

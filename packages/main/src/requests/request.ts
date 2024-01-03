@@ -19,8 +19,6 @@ import { GoogleGenerativeAIError } from "../errors";
 
 const BASE_URL = "https://generativelanguage.googleapis.com";
 
-const API_VERSION = "v1";
-
 /**
  * We can't `require` package.json if this runs on web. We will use rollup to
  * swap in the version number here at build time.
@@ -39,12 +37,13 @@ export enum Task {
 export class RequestUrl {
   constructor(
     public model: string,
+    public apiVersion: string,
     public task: Task,
     public apiKey: string,
     public stream: boolean,
   ) {}
   toString(): string {
-    let url = `${BASE_URL}/${API_VERSION}/models/${this.model}:${this.task}`;
+    let url = `${BASE_URL}/${this.apiVersion}/models/${this.model}:${this.task}`;
     if (this.stream) {
       url += "?alt=sse";
     }

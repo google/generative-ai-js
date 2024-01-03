@@ -26,9 +26,16 @@ import { RequestUrl, Task, makeRequest } from "../requests/request";
 export async function embedContent(
   apiKey: string,
   model: string,
+  apiVersion: string,
   params: EmbedContentRequest,
 ): Promise<EmbedContentResponse> {
-  const url = new RequestUrl(model, Task.EMBED_CONTENT, apiKey, false);
+  const url = new RequestUrl(
+    model,
+    apiVersion,
+    Task.EMBED_CONTENT,
+    apiKey,
+    false,
+  );
   const response = await makeRequest(url, JSON.stringify(params));
   return response.json();
 }
@@ -36,9 +43,16 @@ export async function embedContent(
 export async function batchEmbedContents(
   apiKey: string,
   model: string,
+  apiVersion: string,
   params: BatchEmbedContentsRequest,
 ): Promise<BatchEmbedContentsResponse> {
-  const url = new RequestUrl(model, Task.BATCH_EMBED_CONTENTS, apiKey, false);
+  const url = new RequestUrl(
+    model,
+    apiVersion,
+    Task.BATCH_EMBED_CONTENTS,
+    apiKey,
+    false,
+  );
   const requestsWithModel: EmbedContentRequest[] = params.requests.map(
     (request) => {
       return { ...request, model: `models/${model}` };

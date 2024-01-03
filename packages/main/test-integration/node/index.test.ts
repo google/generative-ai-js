@@ -21,6 +21,7 @@ import { join } from "path";
 import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import {
+  FunctionDeclarationSchemaType,
   GoogleGenerativeAI,
   HarmBlockThreshold,
   HarmCategory,
@@ -164,6 +165,144 @@ describe("generateContent", function () {
     });
     const response = result.response;
     expect(response.text()).to.not.be.empty;
+  });
+  it("non-streaming, tools usage", async () => {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    const model = genAI.getGenerativeModel({
+      model: "gemini-pro",
+      apiVersion: "v1beta",
+    });
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: "Which theaters in Mountain View show Barbie movie?",
+            },
+          ],
+        },
+        {
+          role: "model",
+          parts: [
+            {
+              functionCall: {
+                name: "find_theaters",
+                args: {
+                  location: "Mountain View, CA",
+                  movie: "Barbie",
+                },
+              },
+            },
+          ],
+        },
+        {
+          role: "function",
+          parts: [
+            {
+              functionResponse: {
+                name: "find_theaters",
+                response: {
+                  name: "find_theaters",
+                  content: {
+                    movie: "Barbie",
+                    theaters: [
+                      {
+                        name: "AMC Mountain View 16",
+                        address:
+                          "2000 W El Camino Real, Mountain View, CA 94040",
+                      },
+                      {
+                        name: "Regal Edwards 14",
+                        address: "245 Castro St, Mountain View, CA 94040",
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          ],
+        },
+      ],
+      tools: [
+        {
+          functionDeclarations: [
+            {
+              name: "find_movies",
+              description:
+                "find movie titles currently playing in theaters based on any description, genre, title words, etc.",
+              parameters: {
+                type: FunctionDeclarationSchemaType.OBJECT,
+                properties: {
+                  location: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description:
+                      "The city and state, e.g. San Francisco, CA or a zip code e.g. 95616",
+                  },
+                  description: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description:
+                      "Any kind of description including category or genre, title words, attributes, etc.",
+                  },
+                },
+                required: ["description"],
+              },
+            },
+            {
+              name: "find_theaters",
+              description:
+                "find theaters based on location and optionally movie title which are is currently playing in theaters",
+              parameters: {
+                type: FunctionDeclarationSchemaType.OBJECT,
+                properties: {
+                  location: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description:
+                      "The city and state, e.g. San Francisco, CA or a zip code e.g. 95616",
+                  },
+                  movie: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description: "Any movie title",
+                  },
+                },
+                required: ["location"],
+              },
+            },
+            {
+              name: "get_showtimes",
+              description:
+                "Find the start times for movies playing in a specific theater",
+              parameters: {
+                type: FunctionDeclarationSchemaType.OBJECT,
+                properties: {
+                  location: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description:
+                      "The city and state, e.g. San Francisco, CA or a zip code e.g. 95616",
+                  },
+                  movie: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description: "Any movie title",
+                  },
+                  theater: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description: "Name of the theater",
+                  },
+                  date: {
+                    type: FunctionDeclarationSchemaType.STRING,
+                    description: "Date for requested showtime",
+                  },
+                },
+                required: ["location", "movie", "theater", "date"],
+              },
+            },
+          ],
+        },
+      ],
+    });
+    const response = result.response;
+    expect(response.text()).include("AMC Mountain View 16");
+    expect(response.text()).include("Regal Edwards 14");
   });
 });
 

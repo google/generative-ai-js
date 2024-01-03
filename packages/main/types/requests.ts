@@ -33,6 +33,7 @@ export interface BaseParams {
  */
 export interface ModelParams extends BaseParams {
   model: string;
+  apiVersion?: string;
 }
 
 /**
@@ -41,6 +42,7 @@ export interface ModelParams extends BaseParams {
  */
 export interface GenerateContentRequest extends BaseParams {
   contents: Content[];
+  tools?: Tool[];
 }
 
 /**
@@ -97,4 +99,60 @@ export interface EmbedContentRequest {
  */
 export interface BatchEmbedContentsRequest {
   requests: EmbedContentRequest[];
+}
+
+/**
+ * A Tool is a piece of code that enables the system
+ * to interact * with external systems to perform an action,
+ * or set of actions, outside of knowledge and scope of the model.
+ * @public
+ */
+export interface Tool {
+  functionDeclarations: FunctionDeclaration[];
+}
+
+/**
+ * Contains the list of OpenAPI data types
+ * as defined by https://swagger.io/docs/specification/data-models/data-types/
+ * @public
+ */
+export enum FunctionDeclarationSchemaType {
+  STRING = "STRING",
+  NUMBER = "NUMBER",
+  INTEGER = "INTEGER",
+  BOOLEAN = "BOOLEAN",
+  ARRAY = "ARRAY",
+  OBJECT = "OBJECT",
+}
+
+/**
+ * Structured representation of a function declaration
+ * as defined by the OpenAPI 3.0 specification.
+ * Included in this declaration are the function name and parameters.
+ * This FunctionDeclaration is a representation of a block of code
+ * that can be used as a Tool by the model and executed by the client.
+ * @public
+ */
+export interface FunctionDeclaration {
+  name: string;
+  description: string;
+  parameters: FunctionDeclarationSchema;
+}
+
+/**
+ * Schema is used to define the format of input/output data.
+ * Represents a select subset of an OpenAPI 3.0 schema object.
+ * More fields may be added in the future as needed.
+ * @public
+ */
+export interface FunctionDeclarationSchema {
+  type?: FunctionDeclarationSchemaType;
+  format?: string;
+  description?: string;
+  nullable?: boolean;
+  items?: FunctionDeclarationSchema;
+  enum?: string[];
+  properties?: { [k: string]: FunctionDeclarationSchema };
+  required?: string[];
+  example?: unknown;
 }

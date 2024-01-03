@@ -51,7 +51,12 @@ describe("generateContent()", () => {
     const makeRequestStub = stub(request, "makeRequest").resolves(
       mockResponse as Response,
     );
-    const result = await generateContent("key", "model", fakeRequestParams);
+    const result = await generateContent(
+      "key",
+      "model",
+      "v1",
+      fakeRequestParams,
+    );
     expect(result.response.text()).to.include("Helena");
     expect(makeRequestStub).to.be.calledWith(
       match.instanceOf(request.RequestUrl),
@@ -65,7 +70,12 @@ describe("generateContent()", () => {
     const makeRequestStub = stub(request, "makeRequest").resolves(
       mockResponse as Response,
     );
-    const result = await generateContent("key", "model", fakeRequestParams);
+    const result = await generateContent(
+      "key",
+      "model",
+      "v1,",
+      fakeRequestParams,
+    );
     expect(result.response.text()).to.include("Use Freshly Ground Coffee");
     expect(result.response.text()).to.include("30 minutes of brewing");
     expect(makeRequestStub).to.be.calledWith(
@@ -78,7 +88,12 @@ describe("generateContent()", () => {
     const makeRequestStub = stub(request, "makeRequest").resolves(
       mockResponse as Response,
     );
-    const result = await generateContent("key", "model", fakeRequestParams);
+    const result = await generateContent(
+      "key",
+      "model",
+      "v1",
+      fakeRequestParams,
+    );
     expect(result.response.text()).to.include("Quantum mechanics is");
     expect(
       result.response.candidates[0].citationMetadata.citationSources.length,
@@ -95,7 +110,12 @@ describe("generateContent()", () => {
     const makeRequestStub = stub(request, "makeRequest").resolves(
       mockResponse as Response,
     );
-    const result = await generateContent("key", "model", fakeRequestParams);
+    const result = await generateContent(
+      "key",
+      "model",
+      "v1",
+      fakeRequestParams,
+    );
     expect(result.response.text).to.throw("SAFETY");
     expect(makeRequestStub).to.be.calledWith(
       match.instanceOf(request.RequestUrl),
@@ -109,7 +129,12 @@ describe("generateContent()", () => {
     const makeRequestStub = stub(request, "makeRequest").resolves(
       mockResponse as Response,
     );
-    const result = await generateContent("key", "model", fakeRequestParams);
+    const result = await generateContent(
+      "key",
+      "model",
+      "v1",
+      fakeRequestParams,
+    );
     expect(result.response.text).to.throw("SAFETY");
     expect(makeRequestStub).to.be.calledWith(
       match.instanceOf(request.RequestUrl),
@@ -121,7 +146,12 @@ describe("generateContent()", () => {
     const makeRequestStub = stub(request, "makeRequest").resolves(
       mockResponse as Response,
     );
-    const result = await generateContent("key", "model", fakeRequestParams);
+    const result = await generateContent(
+      "key",
+      "model",
+      "v1",
+      fakeRequestParams,
+    );
     expect(result.response.text()).to.equal("");
     expect(makeRequestStub).to.be.calledWith(
       match.instanceOf(request.RequestUrl),
@@ -133,7 +163,12 @@ describe("generateContent()", () => {
     const makeRequestStub = stub(request, "makeRequest").resolves(
       mockResponse as Response,
     );
-    const result = await generateContent("key", "model", fakeRequestParams);
+    const result = await generateContent(
+      "key",
+      "model",
+      "v1",
+      fakeRequestParams,
+    );
     expect(result.response.text()).to.include("30 minutes of brewing");
     expect(makeRequestStub).to.be.calledWith(
       match.instanceOf(request.RequestUrl),
@@ -148,7 +183,7 @@ describe("generateContent()", () => {
       json: mockResponse.json,
     } as Response);
     await expect(
-      generateContent("key", "model", fakeRequestParams),
+      generateContent("key", "model", "v1", fakeRequestParams),
     ).to.be.rejectedWith(/400.*invalid argument/);
     expect(mockFetch).to.be.called;
   });

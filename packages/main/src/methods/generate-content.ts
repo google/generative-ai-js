@@ -28,10 +28,12 @@ import { processStream } from "../requests/stream-reader";
 export async function generateContentStream(
   apiKey: string,
   model: string,
+  apiVersion: string,
   params: GenerateContentRequest,
 ): Promise<GenerateContentStreamResult> {
   const url = new RequestUrl(
     model,
+    apiVersion,
     Task.STREAM_GENERATE_CONTENT,
     apiKey,
     /* stream */ true,
@@ -43,10 +45,12 @@ export async function generateContentStream(
 export async function generateContent(
   apiKey: string,
   model: string,
+  apiVersion: string,
   params: GenerateContentRequest,
 ): Promise<GenerateContentResult> {
   const url = new RequestUrl(
     model,
+    apiVersion,
     Task.GENERATE_CONTENT,
     apiKey,
     /* stream */ false,

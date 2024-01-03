@@ -26,6 +26,7 @@ use(chaiAsPromised);
 
 const fakeRequestUrl = new RequestUrl(
   "model-name",
+  "v1",
   Task.GENERATE_CONTENT,
   "key",
   true,
@@ -39,6 +40,7 @@ describe("request methods", () => {
     it("stream", async () => {
       const url = new RequestUrl(
         "model-name",
+        "v1",
         Task.GENERATE_CONTENT,
         "key",
         true,
@@ -50,6 +52,7 @@ describe("request methods", () => {
     it("non-stream", async () => {
       const url = new RequestUrl(
         "model-name",
+        "v1",
         Task.GENERATE_CONTENT,
         "key",
         false,
