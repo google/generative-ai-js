@@ -16,5 +16,6 @@ export interface RequestOptions
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
+|  [baseURL?](./generative-ai.requestoptions.baseurl.md) |  | string | _(Optional)_ |
 |  [timeout?](./generative-ai.requestoptions.timeout.md) |  | number | _(Optional)_ |
 

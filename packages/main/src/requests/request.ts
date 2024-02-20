@@ -18,8 +18,6 @@
 import { RequestOptions } from "../../types";
 import { GoogleGenerativeAIError } from "../errors";
 
-const BASE_URL = "https://generativelanguage.googleapis.com";
-
 const API_VERSION = "v1";
 
 /**
@@ -43,9 +41,13 @@ export class RequestUrl {
     public task: Task,
     public apiKey: string,
     public stream: boolean,
+    public requestOptions: RequestOptions,
   ) {}
   toString(): string {
-    let url = `${BASE_URL}/${API_VERSION}/${this.model}:${this.task}`;
+    const baseURL =
+      this.requestOptions?.baseURL ||
+      "https://generativelanguage.googleapis.com";
+    let url = `${baseURL}/${API_VERSION}/${this.model}:${this.task}`;
     if (this.stream) {
       url += "?alt=sse";
     }

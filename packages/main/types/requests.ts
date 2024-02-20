@@ -105,4 +105,5 @@ export interface BatchEmbedContentsRequest {
  */
 export interface RequestOptions {
   timeout?: number;
+  baseURL?: string;
 }

@@ -30,13 +30,14 @@ export async function generateContentStream(
   apiKey: string,
   model: string,
   params: GenerateContentRequest,
-  requestOptions?: RequestOptions,
+  requestOptions: RequestOptions,
 ): Promise<GenerateContentStreamResult> {
   const url = new RequestUrl(
     model,
     Task.STREAM_GENERATE_CONTENT,
     apiKey,
     /* stream */ true,
+    requestOptions,
   );
   const response = await makeRequest(
     url,
@@ -57,6 +58,7 @@ export async function generateContent(
     Task.GENERATE_CONTENT,
     apiKey,
     /* stream */ false,
+    requestOptions,
   );
   const response = await makeRequest(
     url,
