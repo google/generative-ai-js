@@ -29,16 +29,16 @@
 |  Interface | Description |
 |  --- | --- |
 |  [BaseParams](./generative-ai.baseparams.md) | Base parameters for a number of methods. |
-|  [BatchEmbedContentsRequest](./generative-ai.batchembedcontentsrequest.md) | Params for calling [GenerativeModel.batchEmbedContents()](./generative-ai.generativemodel.batchembedcontents.md) |
-|  [BatchEmbedContentsResponse](./generative-ai.batchembedcontentsresponse.md) | Response from calling [GenerativeModel.batchEmbedContents()](./generative-ai.generativemodel.batchembedcontents.md)<!-- -->. |
+|  [BatchEmbedContentsRequest](./generative-ai.batchembedcontentsrequest.md) | Params for calling batchEmbedContents functions |
+|  [BatchEmbedContentsResponse](./generative-ai.batchembedcontentsresponse.md) | Response from calling batchEmbedContents. |
 |  [CitationMetadata](./generative-ai.citationmetadata.md) | Citation metadata that may be found on a [GenerateContentCandidate](./generative-ai.generatecontentcandidate.md)<!-- -->. |
 |  [CitationSource](./generative-ai.citationsource.md) | A single citation source. |
 |  [Content](./generative-ai.content.md) | Content type for both prompts and response candidates. |
 |  [ContentEmbedding](./generative-ai.contentembedding.md) | A single content embedding. |
-|  [CountTokensRequest](./generative-ai.counttokensrequest.md) | Params for calling [GenerativeModel.countTokens()](./generative-ai.generativemodel.counttokens.md) |
-|  [CountTokensResponse](./generative-ai.counttokensresponse.md) | Response from calling [GenerativeModel.countTokens()](./generative-ai.generativemodel.counttokens.md)<!-- -->. |
-|  [EmbedContentRequest](./generative-ai.embedcontentrequest.md) | Params for calling [GenerativeModel.embedContent()](./generative-ai.generativemodel.embedcontent.md) |
-|  [EmbedContentResponse](./generative-ai.embedcontentresponse.md) | Response from calling [GenerativeModel.embedContent()](./generative-ai.generativemodel.embedcontent.md)<!-- -->. |
+|  [CountTokensRequest](./generative-ai.counttokensrequest.md) | Params for calling countTokens functions |
+|  [CountTokensResponse](./generative-ai.counttokensresponse.md) | Response from calling countTokens. |
+|  [EmbedContentRequest](./generative-ai.embedcontentrequest.md) | Params for calling embedContent functions |
+|  [EmbedContentResponse](./generative-ai.embedcontentresponse.md) | Response from calling embedContent. |
 |  [EnhancedGenerateContentResponse](./generative-ai.enhancedgeneratecontentresponse.md) | Response object wrapped with helper methods. |
 |  [FunctionCall](./generative-ai.functioncall.md) | A predicted \[FunctionCall\] returned from the model that contains a string representing the \[FunctionDeclaration.name\] and a structured JSON object containing the parameters and their values. |
 |  [FunctionCallPart](./generative-ai.functioncallpart.md) | Content part interface if the part represents FunctionResponse. |
@@ -50,7 +50,7 @@
 |  [FunctionResponsePart](./generative-ai.functionresponsepart.md) | Content part interface if the part represents FunctionResponse. |
 |  [GenerateContentCandidate](./generative-ai.generatecontentcandidate.md) | A candidate returned as part of a [GenerateContentResponse](./generative-ai.generatecontentresponse.md)<!-- -->. |
 |  [GenerateContentRequest](./generative-ai.generatecontentrequest.md) | Request sent to <code>generateContent</code> endpoint. |
-|  [GenerateContentResponse](./generative-ai.generatecontentresponse.md) | Individual response from [GenerativeModel.generateContent()](./generative-ai.generativemodel.generatecontent.md) and [GenerativeModel.generateContentStream()](./generative-ai.generativemodel.generatecontentstream.md)<!-- -->. <code>generateContentStream()</code> will return one in each chunk until the stream is done. |
+|  [GenerateContentResponse](./generative-ai.generatecontentresponse.md) | Individual response from generateContent and generateContentStream. <code>generateContentStream()</code> will return one in each chunk until the stream is done. |
 |  [GenerateContentResult](./generative-ai.generatecontentresult.md) | Result object returned from generateContent() call. |
 |  [GenerateContentStreamResult](./generative-ai.generatecontentstreamresult.md) | Result object returned from generateContentStream() call. Iterate over <code>stream</code> to get chunks as they come in and/or use the <code>response</code> promise to get the aggregated response when the stream is done. |
 |  [GenerationConfig](./generative-ai.generationconfig.md) | Config options for content-related requests |
@@ -58,10 +58,10 @@
 |  [InlineDataPart](./generative-ai.inlinedatapart.md) | Content part interface if the part represents an image. |
 |  [ModelParams](./generative-ai.modelparams.md) | Params passed to [GoogleGenerativeAI.getGenerativeModel()](./generative-ai.googlegenerativeai.getgenerativemodel.md)<!-- -->. |
 |  [PromptFeedback](./generative-ai.promptfeedback.md) | If the prompt was blocked, this will be populated with <code>blockReason</code> and the relevant <code>safetyRatings</code>. |
-|  [RequestOptions](./generative-ai.requestoptions.md) | Params passed to [GoogleGenerativeAI.getGenerativeModel()](./generative-ai.googlegenerativeai.getgenerativemodel.md)<!-- -->. |
+|  [RequestOptions](./generative-ai.requestoptions.md) | Params passed to the model. |
 |  [SafetyRating](./generative-ai.safetyrating.md) | A safety rating associated with a [GenerateContentCandidate](./generative-ai.generatecontentcandidate.md) |
 |  [SafetySetting](./generative-ai.safetysetting.md) | Safety setting that can be sent as part of request parameters. |
-|  [StartChatParams](./generative-ai.startchatparams.md) | Params for [GenerativeModel.startChat()](./generative-ai.generativemodel.startchat.md)<!-- -->. |
+|  [StartChatParams](./generative-ai.startchatparams.md) | Params for startChat. |
 |  [TextPart](./generative-ai.textpart.md) | Content part interface if the part represents a text string. |
 
 ## Variables
