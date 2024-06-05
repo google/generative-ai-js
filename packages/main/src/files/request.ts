@@ -24,7 +24,7 @@ import {
   DEFAULT_BASE_URL,
   getClientHeaders,
 } from "../requests/request";
-import { RequestOptions } from "../../types";
+import { SingleRequestOptions } from "../../types";
 import { FilesTask } from "./constants";
 
 const taskToMethod = {
@@ -40,7 +40,7 @@ export class FilesRequestUrl {
   constructor(
     public task: FilesTask,
     public apiKey: string,
-    public requestOptions?: RequestOptions,
+    public requestOptions?: SingleRequestOptions,
   ) {
     const apiVersion = this.requestOptions?.apiVersion || DEFAULT_API_VERSION;
     const baseUrl = this.requestOptions?.baseUrl || DEFAULT_BASE_URL;
@@ -131,13 +131,20 @@ export async function makeFilesRequest(
 }
 
 /**
- * Get AbortSignal if timeout is specified
+ * Create an AbortSignal based on the timeout and signal in the
+ * RequestOptions.
  */
-function getSignal(requestOptions?: RequestOptions): AbortSignal | null {
-  if (requestOptions?.timeout >= 0) {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    setTimeout(() => abortController.abort(), requestOptions.timeout);
-    return signal;
+function getSignal(requestOptions?: SingleRequestOptions): AbortSignal | null {
+  if (requestOptions?.signal !== undefined || requestOptions?.timeout >= 0) {
+    const controller = new AbortController();
+    if (requestOptions?.timeout >= 0) {
+      setTimeout(() => controller.abort(), requestOptions.timeout);
+    }
+    if (requestOptions.signal) {
+      requestOptions.signal.addEventListener("abort", () => {
+        controller.abort();
+      });
+    }
+    return controller.signal;
   }
 }

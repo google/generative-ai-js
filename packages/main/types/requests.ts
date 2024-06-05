@@ -179,6 +179,19 @@ export interface RequestOptions {
 }
 
 /**
+ * Params passed to atomic asynchronous operations.
+ * @public
+ */
+export interface SingleRequestOptions extends RequestOptions {
+  /**
+   * An object that may be used to abort asynchronous requests. The request may
+   * also be aborted due to the expiration of the timeout value, if provided,
+   * and if the timeout occurs first.
+   */
+  signal?: AbortSignal;
+}
+
+/**
  * Defines a tool that model can call to access external knowledge.
  * @public
  */

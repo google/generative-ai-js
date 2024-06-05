@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { RequestOptions } from "../../types";
+import { RequestOptions, SingleRequestOptions } from "../../types";
 import { readFileSync } from "fs";
 import { FilesRequestUrl, getHeaders, makeFilesRequest } from "./request";
 import {
@@ -44,21 +44,31 @@ export interface UploadMetadata {
 export class GoogleAIFileManager {
   constructor(
     public apiKey: string,
-    private _requestOptions?: RequestOptions,
+    private _requestOptions: RequestOptions = {},
   ) {}
 
   /**
-   * Upload a file
+   * Upload a file.
+   *
+   * Any fields set in the optional {@link SingleRequestOptions} parameter will take
+   * precedence over the {@link RequestOptions} values provided at the time of the
+   * {@link GoogleAIFileManager} initialization.
    */
   async uploadFile(
     filePath: string,
     fileMetadata: FileMetadata,
+    requestOptions: SingleRequestOptions = {},
   ): Promise<UploadFileResponse> {
     const file = readFileSync(filePath);
+    const filesRequestOptions: SingleRequestOptions = {
+      ...this._requestOptions,
+      ...requestOptions,
+    };
+
     const url = new FilesRequestUrl(
       FilesTask.UPLOAD,
       this.apiKey,
-      this._requestOptions,
+      filesRequestOptions,
     );
 
     const uploadHeaders = getHeaders(url);
@@ -93,13 +103,24 @@ export class GoogleAIFileManager {
   }
 
   /**
-   * List all uploaded files
+   * List all uploaded files.
+   *
+   * Any fields set in the optional {@link SingleRequestOptions} parameter will take
+   * precedence over the {@link RequestOptions} values provided at the time of the
+   * {@link GoogleAIFileManager} initialization.
    */
-  async listFiles(listParams?: ListParams): Promise<ListFilesResponse> {
+  async listFiles(
+    listParams?: ListParams,
+    requestOptions: SingleRequestOptions = {},
+  ): Promise<ListFilesResponse> {
+    const filesRequestOptions: SingleRequestOptions = {
+      ...this._requestOptions,
+      ...requestOptions,
+    };
     const url = new FilesRequestUrl(
       FilesTask.LIST,
       this.apiKey,
-      this._requestOptions,
+      filesRequestOptions,
     );
     if (listParams?.pageSize) {
       url.appendParam("pageSize", listParams.pageSize.toString());
@@ -113,13 +134,24 @@ export class GoogleAIFileManager {
   }
 
   /**
-   * Get metadata for file with given ID
+   * Get metadata for file with given ID.
+   *
+   * Any fields set in the optional {@link SingleRequestOptions} parameter will take
+   * precedence over the {@link RequestOptions} values provided at the time of the
+   * {@link GoogleAIFileManager} initialization.
    */
-  async getFile(fileId: string): Promise<FileMetadataResponse> {
+  async getFile(
+    fileId: string,
+    requestOptions: SingleRequestOptions = {},
+  ): Promise<FileMetadataResponse> {
+    const filesRequestOptions: SingleRequestOptions = {
+      ...this._requestOptions,
+      ...requestOptions,
+    };
     const url = new FilesRequestUrl(
       FilesTask.GET,
       this.apiKey,
-      this._requestOptions,
+      filesRequestOptions,
     );
     url.appendPath(parseFileId(fileId));
     const uploadHeaders = getHeaders(url);
@@ -128,13 +160,24 @@ export class GoogleAIFileManager {
   }
 
   /**
-   * Delete file with given ID
+   * Delete file with given ID.
+   *
+   * Any fields set in the optional {@link SingleRequestOptions} parameter will take
+   * precedence over the {@link RequestOptions} values provided at the time of the
+   * {@link GoogleAIFileManager} initialization.
    */
-  async deleteFile(fileId: string): Promise<void> {
+  async deleteFile(
+    fileId: string,
+    requestOptions: SingleRequestOptions = {},
+  ): Promise<void> {
+    const filesRequestOptions: SingleRequestOptions = {
+      ...this._requestOptions,
+      ...requestOptions,
+    };
     const url = new FilesRequestUrl(
       FilesTask.DELETE,
       this.apiKey,
-      this._requestOptions,
+      filesRequestOptions,
     );
     url.appendPath(parseFileId(fileId));
     const uploadHeaders = getHeaders(url);
