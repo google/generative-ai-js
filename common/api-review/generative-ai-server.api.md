@@ -272,21 +272,7 @@ export interface FunctionCallPart {
 export interface FunctionDeclaration {
     description?: string;
     name: string;
-    parameters?: FunctionDeclarationSchema;
-}
-
-// @public
-export interface FunctionDeclarationSchema {
-    description?: string;
-    properties: {
-        [k: string]: FunctionDeclarationSchemaProperty;
-    };
-    required?: string[];
-    type: FunctionDeclarationSchemaType;
-}
-
-// @public
-export interface FunctionDeclarationSchemaProperty extends Schema {
+    parameters?: Schema;
 }
 
 // @public
@@ -423,10 +409,6 @@ export interface RequestOptions {
 }
 
 // @public
-export interface ResponseSchema extends Schema {
-}
-
-// @public
 export interface RpcStatus {
     code: number;
     details?: ErrorDetails[];
@@ -439,10 +421,10 @@ export interface Schema {
     enum?: string[];
     example?: unknown;
     format?: string;
-    items?: FunctionDeclarationSchema;
+    items?: Schema;
     nullable?: boolean;
     properties?: {
-        [k: string]: FunctionDeclarationSchema;
+        [k: string]: Schema;
     };
     required?: string[];
     type?: FunctionDeclarationSchemaType;
